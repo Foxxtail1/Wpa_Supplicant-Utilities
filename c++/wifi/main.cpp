@@ -1,21 +1,20 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <sys/types.h>
+
 #include <sys/stat.h>
-#include <stdio.h>
+
 using namespace std;
 
 std::string configOrConnectOption;
 std::string configFilePath;
+int  createConfig();
+int  connect();
+bool doesConfigExist(std::string configFile);
+void printBadInputAndExit();
 
 int main() {
     mkdir("$home/try", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    int  createConfig();
-    int  connect();
-    bool doesConfigExist(std::string configFile);
-    void printBadInputAndExit();
-    void direxist();
 
     std::cout << "Create a config or connect? (cr/co)";
     std::cin >> configOrConnectOption;
