@@ -13,7 +13,8 @@ int  connect();
 bool doesConfigExist(std::string configFile);
 void printBadInputAndExit();
 
-int main() {
+int main() 
+{
     mkdir("$home/try", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
     std::cout << "Create a config or connect? (cr/co)";
@@ -21,37 +22,45 @@ int main() {
 
     if(configOrConnectOption == "cr"){
         createConfig();
-    }else if(configOrConnectOption == "co"){
+    }
+    else if(configOrConnectOption == "co")
+    {
         std::cout << "Enter name of config (and/or path): ";
         std::cin >> configFilePath;
         configFilePath = "WPA2_CONF/" + configFilePath;
         if(doesConfigExist(configFilePath)){
             connect();
-        }else{
+        }
+        else
+        {
             std::string ans;
             std::cout << "The config does not exist, create one?(y/n)";
             std::cin >> ans;
 
-            if(ans == "y"){
+            if(ans == "y")
+            {
                 createConfig();
-            }else if(ans == "n"){
+            }
+            else if(ans == "n")
+            {
                 std::cout << "Nothing to do here... Exiting." << std::endl;
                 exit(1);
-            }else{
+            }
+            else
+            {
                 printBadInputAndExit();
             }
         }
-    }else{
+    }
+    else
+    {
         printBadInputAndExit();
     }
-
-
-
     return 0;
 }
 
-
-int createConfig(){
+int createConfig()
+{
     string homeEnVar(getenv("HOME"));
     string path = homeEnVar + "/WPA2_CONF/";
     mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
@@ -66,19 +75,17 @@ int createConfig(){
     configFileName = path + configFileName;
     ifstream ifExist;
     ifExist.open(configFileName);
-    if (ifExist.is_open()){
+    if (ifExist.is_open())
+    {
         printf("Config file already exists!");
         return 0;
-
     }
-
     std::cout << "SSID: ";
     std::cin  >> SSID;
     std::cout << "Usernme: ";
     std::cin  >> username;
     std::cout << "password: ";
     std::cin  >> password;
-
 
     ss << "network={"                       << std::endl;
     ss << "ssid=\""     << SSID     << "\"" << std::endl;
@@ -94,10 +101,13 @@ int createConfig(){
     std::ofstream outStream;
     outStream.open(configFileName);
 
-    if(outStream.is_open()){
+    if(outStream.is_open())
+    {
         outStream << ss.str();
         outStream.close();
-    }else{
+    }
+    else
+    {
         outStream.close();
         std::cout << "Could not open config file..." << std::endl;
         exit(1);
@@ -105,7 +115,8 @@ int createConfig(){
     return 0;
 }
 
-int connect(){
+int connect()
+{
 
     std::string interface;
 
@@ -122,15 +133,16 @@ int connect(){
 
 }
 
-bool doesConfigExist(std::string configFile){
+bool doesConfigExist(std::string configFile)
+{
     std::ifstream testInput;
     testInput.open(configFile);
 
     return testInput.is_open();
 }
 
-void printBadInputAndExit(){
+void printBadInputAndExit()
+{
     std::cout << "Invalid input... Exiting.";
     exit(1);
 }
-
